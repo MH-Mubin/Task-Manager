@@ -34,35 +34,41 @@ app.use(limiter);
 
 // Database Connection
 // let URL = "mongodb+srv://mubin:mubin007@cluster0.1lz4ur6.mongodb.net/";
-// let OPTION = {user:"", pass:"", autoIndex: true}
-// mongoose.connect(URL, OPTION).then(() => {
-//     console.log("Database Connected Successfully");
-// }).catch((err) => {
-//     console.log(err);
-// });
+require('dotenv').config();
+const mongo_url = process.env.MONGO_CONN;
+
+let OPTION = {user:"", pass:"", autoIndex: true}
+mongoose.connect(mongo_url, OPTION).then(() => {
+    console.log("Database Connected Successfully");
+}).catch((err) => {
+    console.log(err);
+});
 
 
-const URL = "mongodb+srv://mubin:mubin007@cluster0.1lz4ur6.mongodb.net/task-manager?retryWrites=true&w=majority";
-const OPTION = {
-  autoIndex: true,
-};
+// const URL = "mongodb+srv://mubin:mubin007@cluster0.1lz4ur6.mongodb.net/task-manager?retryWrites=true&w=majority";
 
-mongoose.connect(URL, OPTION)
-  .then(() => {
-    console.log("✅ Database Connected Successfully");
-  })
-  .catch((err) => {
-    console.error("❌ Database Connection Failed:", err.message);
-  });
+
+
+// const OPTION = {
+//   autoIndex: true,
+// };
+
+// mongoose.connect(mongo_url, OPTION)
+//   .then(() => {
+//     console.log("✅ Database Connected Successfully");
+//   })
+//   .catch((err) => {
+//     console.error("❌ Database Connection Failed:", err.message);
+//   });
 
 
 
 // Route Implementation
 app.use("/api/v1", router);
 
-app.use("*",(req,res)=>{
-    res.status(404).json({message:"Route Not Found"});
-})
+// app.use("*",(req,res)=>{
+//     res.status(404).json({message:"Route Not Found"});
+// })
 
 
 module.exports = app;
