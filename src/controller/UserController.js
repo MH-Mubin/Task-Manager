@@ -1,3 +1,7 @@
+const UserModel = require('../model/UserModel');
+const OTPModel = require('../model/OTPModel');
+const {jwt} = require('jsonwebtoken');
+
 exports.registration = async (req, res) => {
     try {
         const { email } = req.body;
@@ -17,7 +21,24 @@ exports.registration = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    try{
+        let reqBody = req.body;
+        let user = await UserModel.find(reqBody);
+        if (user.length > 0){
 
+            //JWT Token Generation
+            let payload = { exp: Math.floor(Date.now()/1000)+(24*60*60), data: reqBody['email'] };
+            let token = jwt.sign(payload,"123-xyz");
+            res.josn({status:"success", message: "User Found", token: token});
+
+
+            res.status(200).json({message: "Login successful", user: user[0]})  
+        }else{
+        res.status(401).json({message: "Invalid credentials"})
+        }
+}catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+}
 };
 
 exports.profileUpdate = async (req, res) => {
@@ -42,7 +63,12 @@ exports.profileUpdate = async (req, res) => {
 };
 
 exports.profileDetails = async (req, res) => {
-
+    try{
+        let email = req.headers['email'];
+        let reqBody = req.body;
+        await UserModel.create(reqBody);
+        res.json({status:"success", message: "User Found"});
+    }
 }
 
 exports.verifyEmail = async (req, res) => {
