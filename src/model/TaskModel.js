@@ -15,7 +15,7 @@ const dbSchema = new mongoose.Schema({
         enum: ['pending', 'in-progress', 'completed'],
         default: 'pending',
     },
-},{ versionKey: false });
+},{timestamps: true},{ versionKey: false });
 
-const TaskModel = mongoose.model('Task', dbSchema);
+const TaskModel = mongoose.model('tasks', dbSchema);
 module.exports = TaskModel;

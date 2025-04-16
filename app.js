@@ -64,11 +64,10 @@ mongoose.connect(mongo_url, OPTION).then(() => {
 
 
 // Route Implementation
-app.use("/api/v1", router);
-
-// app.use("*",(req,res)=>{
-//     res.status(404).json({message:"Route Not Found"});
-// })
+app.use("/api", router);
+// app.get("/", (req, res) => {
+//     res.send("Welcome to the API");
+// });  
 
 
 module.exports = app;

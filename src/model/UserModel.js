@@ -14,7 +14,7 @@ const dbSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    phone: {
+    mobile: {
         type: String,
         required: true,
         unique: true,
@@ -23,15 +23,8 @@ const dbSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    confirmPassword: {
-        type: String,
-        required: true,
-    },
-    photo: {
-        type: String,
-        default: "https://www.w3schools.com/howto/img_avatar.png",
-    }
-},{versionKey: false});
 
-const UserModel = mongoose.model("User", dbSchema);
+},{timestamps: true},{versionKey: false});
+
+const UserModel = mongoose.model("users", dbSchema);
 module.exports = UserModel;

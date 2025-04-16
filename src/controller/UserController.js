@@ -1,22 +1,26 @@
 const UserModel = require('../model/UserModel');
 const OTPModel = require('../model/OTPModel');
-const {jwt} = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 exports.registration = async (req, res) => {
     try {
-        const { email } = req.body;
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
+        let reqBody  = req.body;
+        await UserModel.create(reqBody);
+        res.json({status:"success", message: "Registration Successfull"});
 
-        const otpData = new OTPModel({ email, otp, expiresAt });
-        await otpData.save();
+        // const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        // const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
 
-        // Send OTP to user's email (implement your email sending logic here)
-        console.log(`OTP for ${email}: ${otp}`);
+        // const otpData = new OTPModel({ email, otp, expiresAt });
+        // await otpData.save();
 
-        res.status(200).json({ message: 'OTP sent to your email' });
+        // // Send OTP to user's email (implement your email sending logic here)
+        // console.log(`OTP for ${email}: ${otp}`);
+
+        // res.status(200).json({ message: 'OTP sent to your email' });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Error during registration:', error); // get the error message
+        res.json({ status: "fail", message: "Internal server error" });
     }
 };
 
@@ -68,6 +72,8 @@ exports.profileDetails = async (req, res) => {
         let reqBody = req.body;
         await UserModel.create(reqBody);
         res.json({status:"success", message: "User Found"});
+    }catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 

@@ -21,5 +21,5 @@ const dbSchema = new mongoose.Schema({
     }
 },{timestamps: true}, { versionKey: false });
 
-const OTPModel = mongoose.model('OTP', dbSchema);
+const OTPModel = mongoose.model('otps', dbSchema);
 module.exports = OTPModel;
