@@ -29,19 +29,26 @@ exports.login = async (req, res) => {
         let reqBody = req.body;
         let user = await UserModel.find(reqBody);
         if (user.length > 0){
+            // JWT Token Generation
+            let payload = {
+                exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 1 day expiry
+                data: reqBody['email']
+            };
+            let token = jwt.sign(payload, "123-xyz");
 
-            //JWT Token Generation
-            let payload = { exp: Math.floor(Date.now()/1000)+(24*60*60), data: reqBody['email'] };
-            let token = jwt.sign(payload,"123-xyz");
-            res.josn({status:"success", message: "User Found", token: token});
-
-
-            res.status(200).json({message: "Login successful", user: user[0]})  
+            // Only one response!
+            return res.json({
+                status: "success",
+                message: "Login successful",
+                token: token,
+                user: user[0]
+            });  
         }else{
         res.status(401).json({message: "Invalid credentials"})
         }
-}catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+} catch (error) {
+    console.error('Error during login:', error); // get the error message
+    res.json({ status: "fail", message: "Internal server error" });
 }
 };
 
@@ -73,7 +80,8 @@ exports.profileDetails = async (req, res) => {
         await UserModel.create(reqBody);
         res.json({status:"success", message: "User Found"});
     }catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Error during profileDetails:', error); // get the error message
+        res.json({ status: "fail", message: "Internal server error" });
     }
 }
 
