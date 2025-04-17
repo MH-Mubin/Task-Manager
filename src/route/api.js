@@ -13,9 +13,10 @@ router.post('/login', userController.login);
 
 // after login
 router.get('/profileDetails',AuthMiddleware, userController.profileDetails);
-
-router.post('/profileUpdate', userController.profileUpdate);
+router.post('/profileUpdate',AuthMiddleware, userController.profileUpdate);
 router.get('/verifyEmail/:email', userController.verifyEmail);
+
+
 router.get('/verifyOTP/:email/:otp', userController.verifyOTP);
 router.get('/resetPassword/:email/:otp/:password', userController.resetPassword);
 

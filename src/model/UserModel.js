@@ -17,14 +17,13 @@ const dbSchema = new mongoose.Schema({
     mobile: {
         type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
         required: true,
     },
 
-},{timestamps: true},{versionKey: false});
+},{timestamps: true, versionKey: false});
 
 const UserModel = mongoose.model("users", dbSchema);
 module.exports = UserModel;

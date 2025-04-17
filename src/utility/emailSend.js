@@ -26,7 +26,6 @@ const sendEmailUtility = async(emailTo, emailText, emailSubject) => {
             console.log('Email sent:', info.response);
         }
     });
-
-
-
 }
+
+module.exports = sendEmailUtility;

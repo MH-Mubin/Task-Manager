@@ -8,16 +8,6 @@ exports.registration = async (req, res) => {
         await UserModel.create(reqBody);
         res.json({status:"success", message: "Registration Successfull"});
 
-        // const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        // const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // OTP valid for 5 minutes
-
-        // const otpData = new OTPModel({ email, otp, expiresAt });
-        // await otpData.save();
-
-        // // Send OTP to user's email (implement your email sending logic here)
-        // console.log(`OTP for ${email}: ${otp}`);
-
-        // res.status(200).json({ message: 'OTP sent to your email' });
     } catch (error) {
         console.error('Error during registration:', error); // get the error message
         res.json({ status: "fail", message: "Internal server error" });
@@ -52,42 +42,53 @@ exports.login = async (req, res) => {
 }
 };
 
-exports.profileUpdate = async (req, res) => {
-    try {
-        const { email, name } = req.body;
-        const userId = req.user._id; // Assuming you have user ID from authentication middleware
-
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            userId,
-            { email, name },
-            { new: true }
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
 
 exports.profileDetails = async (req, res) => {
     try{
-        let email = req.headers['email'];
-        let reqBody = req.body;
-        await UserModel.create(reqBody);
-        res.json({status:"success", message: "User Found"});
+        let email = req.headers['email'];//getting the email from the header
+        let result = await UserModel.find({email: email});//getting the user from the database
+
+        res.json({status:"success", message: "User Found", data: result});//sending the user data as response
     }catch (error) {
         console.error('Error during profileDetails:', error); // get the error message
         res.json({ status: "fail", message: "Internal server error" });
     }
 }
 
-exports.verifyEmail = async (req, res) => {
 
-}
+exports.profileUpdate = async (req, res) => {
+    try{
+        let email = req.headers['email']; //getting the email from the header
+        let reqBody = req.body; // Extracting request body
+        await UserModel.updateOne({email: email}, reqBody); // Updating user data in the database
+        res.json({status:"success", message: "Profile Updated Successfully"}); // Sending success response
+    }catch (error) {
+        console.error('Error during profileUpdate:', error); // get the error message
+        res.json({ status: "fail", message: "Internal server error" });
+    }
+};
+
+
+exports.verifyEmail = async (req, res) => {
+    try {
+        const { email } = req.params; // Extract email from request parameters
+        let user = await UserModel.find({ email: email }); // Check if user exists in the database
+        if (user.length> 0) {
+            // Send Email with OTP
+            let otp = Math.floor(100000 + Math.random() * 900000); // Generate a random 6-digit OTP
+            await sendEmailUtility(email, `Your OTP is ${otp}`, 'Email Verification OTP'); // Send OTP to user's email
+
+        }else{
+            return res.json({status:'fail', message: 'User not found' }); // User not found
+        }
+
+    } catch (error) {
+        console.error('Error during email verification:', error); // get the error message
+        res.status(500).json({ error: 'Internal server error' });
+    }}
+
+
+    
 exports.verifyOTP = async (req, res) => {
     
 }
