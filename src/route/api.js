@@ -10,15 +10,13 @@ const AuthMiddleware = require('../middleware/AuthMiddleware');
 
 router.post('/registration', userController.registration);
 router.post('/login', userController.login);
+router.get('/verifyEmail/:email', userController.verifyEmail);
+router.get('/verifyOTP/:email/:otp', userController.verifyOTP);
 
 // after login
 router.get('/profileDetails',AuthMiddleware, userController.profileDetails);
 router.post('/profileUpdate',AuthMiddleware, userController.profileUpdate);
-router.get('/verifyEmail/:email', userController.verifyEmail);
-
-
-router.get('/verifyOTP/:email/:otp', userController.verifyOTP);
-router.get('/resetPassword/:email/:otp/:password', userController.resetPassword);
+router.get('/resetPassword/:email/:otp/:password',AuthMiddleware, userController.resetPassword);
 
 
 

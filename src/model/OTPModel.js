@@ -6,6 +6,11 @@ const dbSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status: {
+        type: String,
+        required: true,
+        default: 'active', // Default status is 'active'
+    },
     otp: {
         type: String,
         required: true,
