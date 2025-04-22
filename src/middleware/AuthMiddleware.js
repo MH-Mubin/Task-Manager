@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
     let token = req.headers['token']; //getting the token from the header
 
-    jwt.verify(token, "123-xyz", (err, decoded) => {
+    jwt.verify(token, "123-abc-123", (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: "Unauthorized" });
         } else {
