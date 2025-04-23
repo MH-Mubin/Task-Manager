@@ -33,7 +33,7 @@ app.use(limiter);
 
 
 // Database Connection
-// let URL = "mongodb+srv://mubin:mubin007@cluster0.1lz4ur6.mongodb.net/";
+// let URL = "mongodb connection string";
 require('dotenv').config();
 const mongo_url = process.env.MONGO_CONN;
 
@@ -45,7 +45,8 @@ mongoose.connect(mongo_url, OPTION).then(() => {
 });
 
 
-// const URL = "mongodb+srv://mubin:mubin007@cluster0.1lz4ur6.mongodb.net/task-manager?retryWrites=true&w=majority";
+// const URL = "MongoDB connection string
+";
 
 
 
