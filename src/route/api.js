@@ -23,7 +23,7 @@ router.get('/resetPassword/:email/:otp/:password',AuthMiddleware, userController
 router.post('/createTask',AuthMiddleware, TaskController.createTask);
 router.post('/updateTask/:id',AuthMiddleware, TaskController.updateTask);
 router.get('/readTask',AuthMiddleware, TaskController.readTask);
-router.delete('/deleteTask',AuthMiddleware, TaskController.deleteTask);
+router.delete('/deleteTask/:id',AuthMiddleware, TaskController.deleteTask);
 
 //Logout
 //router.get('/logout',AuthMiddleware, userController.logout);

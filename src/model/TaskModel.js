@@ -16,10 +16,10 @@ const dbSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'in-progress', 'completed'],
-        default: 'pending',
+        required: true,
+        // default: 'active', // Default status is 'active'
     },
-},{timestamps: true},{ versionKey: false });
+},{timestamps: false},{ versionKey: false });
 
 const TaskModel = mongoose.model('tasks', dbSchema);
 module.exports = TaskModel;
